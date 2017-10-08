@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import autobind from 'class-autobind';
+import routerService from './../services/RouterService'
 
-export default class App extends React.Component {
+class App extends Component {
+    constructor() {
+        super();
+        autobind(this);
+
+        routerService.addOnRouteChangeListener(this.onRouteChange)
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -10,6 +19,14 @@ export default class App extends React.Component {
                 <Text>Shake your phone to open the developer menu.</Text>
             </View>
         );
+    }
+
+    onRouteChange() {
+        this.setState(this.state);
+    }
+
+    componentWillUnmount() {
+        routerService.removeOnRouteChangeListener(this.onRouteChange)
     }
 }
 
@@ -21,3 +38,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+
+export default App;
