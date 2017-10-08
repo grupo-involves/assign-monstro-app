@@ -1,14 +1,50 @@
+import {AsyncStorage} from 'react-native'
 import {AuthSession} from 'expo';
 import autobind from 'class-autobind';
+import deepFreeze from 'deep-freeze';
 
 import config from './../../config'
+
+const STORAGE_KEY_USER_ACCESS_TOKEN = "app.facebookAuthAccessToken";
 
 class LoginService {
     constructor() {
         autobind(this);
+        this._currentUserInfo = null;
     }
 
     async doFacebookLogin() {
+        const accessToken = await this.fetchAccessToken();
+
+        const userInfo = await this.fetchUserInfo(accessToken);
+        this.currentUserInfo = userInfo;
+
+        return userInfo;
+    }
+
+    async doAuthFromPreviousLogin() {
+        try {
+            // TODO SLOW AS FUCK
+            const accessToken = await this.getAccessToken();
+
+            if (accessToken == null) {
+                console.log("no previous login available");
+                return null;
+            }
+
+            const userInfo = await this.fetchUserInfo(accessToken);
+            this.currentUserInfo = userInfo;
+
+            return userInfo;
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+
+    //
+    /** @private */
+    async fetchAccessToken() {
         let redirectUrl = AuthSession.getRedirectUrl();
 
         // You need to add this url to your authorized redirect urls on your Facebook app
@@ -35,13 +71,45 @@ class LoginService {
             return;
         }
 
-        let accessToken = result.params.access_token;
+        const accessToken = result.params.access_token;
+        await this.saveAccessToken(accessToken);
+        return accessToken;
+    }
+
+    /** @private */
+    async saveAccessToken(userInfo) {
+        await AsyncStorage.setItem(STORAGE_KEY_USER_ACCESS_TOKEN, userInfo)
+    }
+
+    /** @private */
+    async getAccessToken() {
+        return await AsyncStorage.getItem(STORAGE_KEY_USER_ACCESS_TOKEN);
+    }
+
+    /** @private */
+    async removeAccessToken() {
+        return await AsyncStorage.removeItem(STORAGE_KEY_USER_ACCESS_TOKEN);
+    }
+
+    /** @private */
+    async fetchUserInfo(accessToken) {
+        console.log(`doing fetchUserInfo with accessToken ${accessToken}`);
         let userInfoResponse = await fetch(
             `https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,picture.type(large)`
         );
-        const userInfo = await userInfoResponse.json();
-        console.log({userInfo});
+        let userInfo = await userInfoResponse.json();
+        userInfo = deepFreeze(userInfo);
         return userInfo;
+    }
+
+    get currentUserInfo() {
+        return this._currentUserInfo;
+    }
+
+    set currentUserInfo(currentUserInfo) {
+        this._currentUserInfo = currentUserInfo;
+        console.log("updating _currentUserInfo");
+        console.log({currentUserInfo});
     }
 }
 

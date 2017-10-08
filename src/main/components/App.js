@@ -4,6 +4,7 @@ import autobind from 'class-autobind';
 
 import routerService from './../services/RouterService'
 
+import Home from './../../home/components/Home';
 import Login from './../../login/components/Login';
 
 class App extends Component {
@@ -21,6 +22,8 @@ class App extends Component {
     render() {
         if (this.state.currentRoute === routerService.routes.login) {
             return (<Login/>)
+        } else if (this.state.currentRoute === routerService.routes.home) {
+            return (<Home/>)
         } else {
             throw new Error(`state ${this.state.currentRoute} not set up`)
         }

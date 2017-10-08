@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Image, Text, View} from 'react-native';
+import {Button, View} from 'react-native';
 import autobind from 'class-autobind';
+
+import routerService from './../../main/services/RouterService'
 
 import loginService from '../services/LoginService'
 
@@ -9,45 +11,25 @@ class Login extends Component {
         super();
         autobind(this);
 
-        this.state = {
-            userInfo: null,
-        };
+        loginService.doAuthFromPreviousLogin()
+            .then((userInfo) => {
+                if (userInfo != null) {
+                    routerService.goToHome();
+                }
+            });
     }
 
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                {
-                    this.state.userInfo != null
-                        ? (this._renderUserInfo())
-                        : (this._renderLoginButton())
-                }
+                <Button title="Open FB Auth" onPress={this._handlePressAsync}/>
             </View>
         );
-    }
-
-    _renderUserInfo() {
-        return (
-            <View style={{alignItems: 'center'}}>
-                <Image
-                    source={{uri: this.state.userInfo.picture.data.url}}
-                    style={{width: 100, height: 100, borderRadius: 50}}
-                />
-                <Text style={{fontSize: 20}}>{this.state.userInfo.name}</Text>
-                <Text>ID: {this.state.userInfo.id}</Text>
-            </View>
-        );
-    };
-
-    _renderLoginButton() {
-        return (
-            <Button title="Open FB Auth" onPress={this._handlePressAsync}/>
-        )
     }
 
     async _handlePressAsync() {
-        let userInfo = await loginService.doFacebookLogin();
-        this.setState({userInfo});
+        await loginService.doFacebookLogin();
+        routerService.goToHome();
     };
 }
 
