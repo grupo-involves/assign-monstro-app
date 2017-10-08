@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
 import autobind from 'class-autobind';
 import routerService from './../services/RouterService'
+
+import Login from './../../login/components/Login';
 
 class App extends Component {
     constructor() {
         super();
         autobind(this);
 
+        this.state = {
+            currentRoute: routerService.currentRoute
+        };
+
         routerService.addOnRouteChangeListener(this.onRouteChange)
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Text>Open up App.js to start working on your app!</Text>
-                <Text>Changes you make will automatically reload.</Text>
-                <Text>Shake your phone to open the developer menu.</Text>
-            </View>
-        );
+        if (this.state.currentRoute === routerService.routes.login) {
+            return (<Login/>)
+        } else {
+            throw new Error(`state ${this.state.currentRoute} not set up`)
+        }
     }
 
     onRouteChange() {
-        this.setState(this.state);
+        this.setState({
+            currentRoute: routerService.currentRoute
+        });
     }
 
     componentWillUnmount() {
