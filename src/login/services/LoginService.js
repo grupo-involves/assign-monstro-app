@@ -24,8 +24,9 @@ class LoginService {
 
     async doAuthFromPreviousLogin() {
         try {
-            // TODO SLOW AS FUCK
+            console.log("getAccessToken " + new Date());
             const accessToken = await this.getAccessToken();
+            console.log("getAccessToken done " + new Date())
 
             if (accessToken == null) {
                 console.log("no previous login available");
@@ -108,7 +109,7 @@ class LoginService {
 
     set currentUserInfo(currentUserInfo) {
         this._currentUserInfo = currentUserInfo;
-        console.log("updating _currentUserInfo");
+        console.log("currentUserInfo updated");
         console.log({currentUserInfo});
     }
 }
