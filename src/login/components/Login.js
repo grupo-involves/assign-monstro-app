@@ -1,27 +1,33 @@
 import React, {Component} from 'react';
 import {Button, Image, Text, View} from 'react-native';
 import {AuthSession} from 'expo';
+import autobind from 'class-autobind';
 
 import config from './../../config'
 
 class Login extends Component {
-    state = {
-        userInfo: null,
-    };
+    constructor() {
+        super();
+        autobind(this);
+
+        this.state = {
+            userInfo: null,
+        };
+    }
 
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                {!this.state.userInfo ? (
-                    <Button title="Open FB Auth" onPress={this._handlePressAsync}/>
-                ) : (
-                    this._renderUserInfo()
-                )}
+                {
+                    this.state.userInfo != null
+                        ? (this._renderUserInfo())
+                        : (this._renderLoginButton())
+                }
             </View>
         );
     }
 
-    _renderUserInfo = () => {
+    _renderUserInfo() {
         return (
             <View style={{alignItems: 'center'}}>
                 <Image
@@ -34,7 +40,13 @@ class Login extends Component {
         );
     };
 
-    _handlePressAsync = async () => {
+    _renderLoginButton() {
+        return (
+            <Button title="Open FBZ Auth" onPress={this._handlePressAsync}/>
+        )
+    }
+
+    async _handlePressAsync() {
         let redirectUrl = AuthSession.getRedirectUrl();
 
         // You need to add this url to your authorized redirect urls on your Facebook app
