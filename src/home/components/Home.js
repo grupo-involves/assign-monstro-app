@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Button, Image, Text, View} from 'react-native';
 import autobind from 'class-autobind';
 
 import loginService from '../../login/services/LoginService'
@@ -20,9 +20,15 @@ class Home extends Component {
                     />
                     <Text style={{fontSize: 20}}>{loginService.currentUserInfo.name}</Text>
                     <Text>ID: {loginService.currentUserInfo.id}</Text>
+
+                    <Button title="Sair" onPress={this._handleLogoff}/>
                 </View>
             </View>
         );
+    }
+
+    async _handleLogoff() {
+        await loginService.logoff();
     }
 }
 

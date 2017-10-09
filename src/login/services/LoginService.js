@@ -4,6 +4,7 @@ import autobind from 'class-autobind';
 import deepFreeze from 'deep-freeze';
 
 import config from './../../config'
+import routerService from './../../main/services/RouterService'
 
 const STORAGE_KEY_USER_ACCESS_TOKEN = "app.facebookAuthAccessToken";
 
@@ -24,9 +25,7 @@ class LoginService {
 
     async doAuthFromPreviousLogin() {
         try {
-            console.log("getAccessToken " + new Date());
             const accessToken = await this.getAccessToken();
-            console.log("getAccessToken done " + new Date())
 
             if (accessToken == null) {
                 console.log("no previous login available");
@@ -41,6 +40,14 @@ class LoginService {
             console.error(e);
             return null;
         }
+    }
+
+    async logoff() {
+        await this.removeAccessToken();
+        this.currentUserInfo = null;
+
+        console.log("logoff");
+        routerService.goToLogin();
     }
 
     //
@@ -62,7 +69,7 @@ class LoginService {
         let result = await AuthSession.startAsync({
             authUrl:
             `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
-            `&client_id=${config.FB_APP_ID}` +
+            `&client_id=${config.FACEBOOK_APP_ID}` +
             `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
         });
 
@@ -109,7 +116,7 @@ class LoginService {
 
     set currentUserInfo(currentUserInfo) {
         this._currentUserInfo = currentUserInfo;
-        console.log("currentUserInfo updated");
+        console.log("changing currentUserInfo");
         console.log({currentUserInfo});
     }
 }

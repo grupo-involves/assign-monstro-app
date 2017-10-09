@@ -1,5 +1,5 @@
 const config = {
-    FB_APP_ID: '135130747130521'
+    FACEBOOK_APP_ID: '135130747130521',
 };
 
 Object.freeze(config);

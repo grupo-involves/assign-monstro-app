@@ -22,12 +22,12 @@ class Login extends Component {
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Button title="Open FB Auth" onPress={this._handlePressAsync}/>
+                <Button title="Open FB Auth" onPress={this._handleFacebookLogin}/>
             </View>
         );
     }
 
-    async _handlePressAsync() {
+    async _handleFacebookLogin() {
         await loginService.doFacebookLogin();
         routerService.goToHome();
     };
