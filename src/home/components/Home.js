@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Image, Text, View} from 'react-native';
+import Expo from 'expo';
 import autobind from 'class-autobind';
 
 import loginService from '../../login/services/LoginService'
@@ -21,11 +22,34 @@ class Home extends Component {
                     <Text style={{fontSize: 20}}>{loginService.currentUserInfo.name}</Text>
                     <Text>ID: {loginService.currentUserInfo.id}</Text>
 
+                    <Button title="Log location" onPress={this._handleGetLocation}/>
                     <Button title="Sair" onPress={this._handleLogoff}/>
                 </View>
             </View>
         );
     }
+
+    async _handleGetLocation() {
+        const {Permissions} = Expo;
+        const {status} = await Permissions.askAsync(Permissions.LOCATION);
+        if (status === 'granted') {
+            navigator.geolocation.getCurrentPosition(
+                function () {
+                    console.log("location");
+                    console.log(arguments[0]);
+                },
+                function () {
+                    console.error("geolocation.getCurrentPosition error");
+                    console.error(arguments);
+                    alert("erro ao buscar localizacao")
+                },
+                {enableHighAccuracy: true, timeout: 25000, maximumAge: 3600000}
+            );
+        } else {
+            console.log("not granted");
+            alert('Hey! You might want to enable notifications for my app, they are good.');
+        }
+    }   
 
     async _handleLogoff() {
         await loginService.logoff();
