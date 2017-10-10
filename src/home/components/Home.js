@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Image, Text, View} from 'react-native';
-import Expo from 'expo';
+import {ImagePicker, Permissions} from 'expo';
 import autobind from 'class-autobind';
 
 import loginService from '../../login/services/LoginService'
@@ -23,6 +23,7 @@ class Home extends Component {
                     <Text>ID: {loginService.currentUserInfo.id}</Text>
 
                     <Button title="Log location" onPress={this._handleGetLocation}/>
+                    <Button title="Photo" onPress={this._handleTakePhoto}/>
                     <Button title="Sair" onPress={this._handleLogoff}/>
                 </View>
             </View>
@@ -30,7 +31,6 @@ class Home extends Component {
     }
 
     async _handleGetLocation() {
-        const {Permissions} = Expo;
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
             navigator.geolocation.getCurrentPosition(
@@ -49,7 +49,11 @@ class Home extends Component {
             console.log("not granted");
             alert('Hey! You might want to enable notifications for my app, they are good.');
         }
-    }   
+    }
+
+    async _handleTakePhoto() {
+        ImagePicker.launchCameraAsync()
+    }
 
     async _handleLogoff() {
         await loginService.logoff();
