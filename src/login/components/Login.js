@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {Button, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import Button from 'react-native-button';
 import autobind from 'class-autobind';
 
-import routerService from './../../main/services/RouterService'
+import colors from './../../colors';
 
+import routerService from './../../main/services/RouterService'
 import loginService from '../services/LoginService'
 
 class Login extends Component {
@@ -21,8 +23,13 @@ class Login extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Button title="Open FB Auth" onPress={this._handleFacebookLogin}/>
+            <View style={styles.view}>
+                <Button
+                    containerStyle={styles.buttonContainerLoginFacebook}
+                    style={styles.buttonLoginFacebook}
+                    onPress={this._handleFacebookLogin}>
+                    Entrar com Facebook
+                </Button>
             </View>
         );
     }
@@ -32,5 +39,24 @@ class Login extends Component {
         routerService.goToHome();
     };
 }
+
+const styles = StyleSheet.create({
+    view: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.orange,
+    },
+    buttonContainerLoginFacebook: {
+        backgroundColor: colors.yellow,
+        padding: 12,
+        borderRadius: 4,
+        elevation: 2,
+    },
+    buttonLoginFacebook: {
+        color: colors.white,
+        fontSize: 24,
+    },
+});
 
 export default Login;

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
 import autobind from 'class-autobind';
 
 import routerService from './../services/RouterService'
@@ -39,14 +38,5 @@ class App extends Component {
         routerService.removeOnRouteChangeListener(this.onRouteChange)
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
 
 export default App;
