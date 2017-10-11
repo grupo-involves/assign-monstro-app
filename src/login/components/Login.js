@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     buttonContainerLoginFacebook: {
         backgroundColor: colors.yellow,
         padding: 12,
-        borderRadius: 4,
+        borderRadius: 2,
         elevation: 2,
     },
     buttonLoginFacebook: {

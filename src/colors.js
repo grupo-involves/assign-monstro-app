@@ -6,4 +6,6 @@ const colors = {
     white: "#fcfcfc"
 };
 
+Object.freeze(colors);
+
 export default colors;

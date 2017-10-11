@@ -3,6 +3,8 @@ import {Button, Image, Text, View} from 'react-native';
 import {ImagePicker, Permissions} from 'expo';
 import autobind from 'class-autobind';
 
+import AppNavigationBar from './../../common/components/AppNavigationBar';
+
 import loginService from '../../login/services/LoginService'
 
 class Home extends Component {
@@ -13,18 +15,28 @@ class Home extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <View style={{alignItems: 'center'}}>
-                    <Image
-                        source={{uri: loginService.currentUserInfo.picture.data.url}}
-                        style={{width: 100, height: 100, borderRadius: 50}}
-                    />
-                    <Text style={{fontSize: 20}}>{loginService.currentUserInfo.name}</Text>
-                    <Text>ID: {loginService.currentUserInfo.id}</Text>
+            <View style={{flex: 1}}>
+                <AppNavigationBar/>
 
-                    <Button title="Log location" onPress={this._handleGetLocation}/>
-                    <Button title="Photo" onPress={this._handleTakePhoto}/>
-                    <Button title="Sair" onPress={this._handleLogoff}/>
+                <View style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <View style={{
+                        alignItems: 'center'
+                    }}>
+                        <Image
+                            source={{uri: loginService.currentUserInfo.picture.data.url}}
+                            style={{width: 100, height: 100, borderRadius: 50}}
+                        />
+                        <Text style={{fontSize: 20}}>{loginService.currentUserInfo.name}</Text>
+                        <Text>ID: {loginService.currentUserInfo.id}</Text>
+
+                        <Button title="Log location" onPress={this._handleGetLocation}/>
+                        <Button title="Photo" onPress={this._handleTakePhoto}/>
+                        <Button title="Sair" onPress={this._handleLogoff}/>
+                    </View>
                 </View>
             </View>
         );
