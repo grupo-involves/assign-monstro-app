@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {ScrollView, Text, View} from "react-native";
 import autobind from 'class-autobind';
 
 import routerService from './../services/RouterService'
@@ -19,13 +20,17 @@ class App extends Component {
     }
 
     render() {
-        if (this.state.currentRoute === routerService.routes.login) {
-            return (<Login/>)
-        } else if (this.state.currentRoute === routerService.routes.home) {
-            return (<Home/>)
-        } else {
-            throw new Error(`state ${this.state.currentRoute} not set up`)
-        }
+        return (
+            <ScrollView contentContainerStyle={{flexGrow: 1}}>
+                <View style={{flex: 1}}>
+                    {
+                        this.state.currentRoute === routerService.routes.login ? <Login/>
+                            : this.state.currentRoute === routerService.routes.home ? <Home/>
+                            : <Text>No view defined</Text>
+                    }
+                </View>
+            </ScrollView>
+        );
     }
 
     onRouteChange() {
