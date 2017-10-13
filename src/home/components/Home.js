@@ -4,6 +4,7 @@ import {ImagePicker, Permissions} from 'expo';
 import autobind from 'class-autobind';
 
 import AppNavigationBar from './../../common/components/AppNavigationBar';
+import AppBottomNavigationBar from "../../common/components/AppBottomNavigationBar";
 
 import loginService from '../../login/services/LoginService'
 
@@ -38,6 +39,8 @@ class Home extends Component {
                         <Button title="Sair" onPress={this._handleLogoff}/>
                     </View>
                 </View>
+
+                <AppBottomNavigationBar/>
             </View>
         );
     }
