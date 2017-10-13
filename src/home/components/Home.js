@@ -17,7 +17,6 @@ class Home extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <AppNavigationBar/>
 
                 <View style={{
                     flex: 1,
@@ -39,8 +38,6 @@ class Home extends Component {
                         <Button title="Sair" onPress={this._handleLogoff}/>
                     </View>
                 </View>
-
-                <AppBottomNavigationBar/>
             </View>
         );
     }

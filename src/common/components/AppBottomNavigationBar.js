@@ -2,20 +2,45 @@ import React, {Component} from 'react'
 import {Image, StyleSheet} from "react-native";
 import BottomNavigation, {Tab} from 'react-native-material-bottom-navigation'
 
+import autobind from "class-autobind";
+
+import colors from "../../colors";
+import routerService from "../../main/services/RouterService";
+
 class AppBottomNavigationBar extends Component {
+    constructor(props) {
+        super(props);
+        autobind(this);
+
+        this.state = {
+            currentRoute: routerService.currentRoute
+        };
+
+        routerService.addOnRouteChangeListener(this.onRouteChange)
+    }
+
     render() {
         return (
             <BottomNavigation
+                barBackgroundColor="#fcfcfc"
                 backgroundColor="#fcfcfc"
+                activeLabelColor={colors.orangeDarken}
                 style={styles.navigationBar}
-                onTabChange={(newTabIndex) => alert(`New Tab at position ${newTabIndex}`)}
+                onTabChange={this.onTabChange}
+                activeTab={this.currentRouteIndex}
             >
                 <Tab
-                    label="Meus envios"
+                    label="Galeria"
                     icon={
                         <Image
-                            source={require('./assets/AppBottomNavigationBar-fight.png')}
-                            style={styles.navigationBarFight}
+                            source={require('./assets/AppBottomNavigationBar-gallery.png')}
+                            style={styles.navigationBarIcon}
+                        />
+                    }
+                    activeIcon={
+                        <Image
+                            source={require('./assets/AppBottomNavigationBar-gallery-active.png')}
+                            style={styles.navigationBarIcon}
                         />
                     }
                 />
@@ -24,13 +49,51 @@ class AppBottomNavigationBar extends Component {
                     icon={
                         <Image
                             source={require('./assets/AppBottomNavigationBar-fight.png')}
-                            style={styles.navigationBarFight}
+                            style={styles.navigationBarIcon}
+                        />
+                    }
+                    activeIcon={
+                        <Image
+                            source={require('./assets/AppBottomNavigationBar-fight-active.png')}
+                            style={styles.navigationBarIcon}
                         />
                     }
                 />
             </BottomNavigation>
         )
     }
+
+    get currentRouteIndex() {
+        if (routerService.currentRoute === routerService.routes.gallery) {
+            return 0;
+        } else if (routerService.currentRoute === routerService.routes.pdvFight) {
+            return 1;
+        } else {
+            console.log(`rota ${routerService.currentRoute} não configurada na barra de navegação`);
+            return 0;
+        }
+    }
+
+    onTabChange(index) {
+        if (index === 0) {
+            routerService.goToGallery();
+        } else if (index === 1) {
+            routerService.goToPdvFight()
+        }
+    }
+
+    onRouteChange() {
+        this.setState({
+            currentRoute: routerService.currentRoute
+        });
+    }
+
+    componentWillUnmount() {
+        routerService.removeOnRouteChangeListener(this.onRouteChange)
+        this.setState = () => {
+        }
+    }
+
 }
 
 
@@ -44,7 +107,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
     },
-    navigationBarFight: {
+    navigationBarIcon: {
         width: 24,
         height: 24,
         resizeMode: 'contain',

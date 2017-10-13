@@ -5,6 +5,9 @@ class RouterService {
         this.routes = Object.freeze({
             login: "login",
             home: "home",
+            gallery: "gallery",
+            galleryAdd: "galleryAdd",
+            pdvFight: "pdvFight",
         });
 
         this.onRouteChangeListeners = [];
@@ -37,6 +40,20 @@ class RouterService {
 
     goToHome() {
         this.currentRoute = this.routes.home;
+    }
+
+    goToGallery() {
+        this.currentRoute = this.routes.gallery;
+    }
+
+
+    goToGalleryAdd() {
+        this.currentRoute = this.routes.galleryAdd;
+    }
+
+
+    goToPdvFight() {
+        this.currentRoute = this.routes.pdvFight;
     }
 }
 
