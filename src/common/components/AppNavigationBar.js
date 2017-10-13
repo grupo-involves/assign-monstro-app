@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
-import {Image, StyleSheet} from "react-native";
+import {Image, StyleSheet, TouchableHighlight} from "react-native";
 import NavigationBar from 'react-native-navbar';
 
-import colors from './../../colors';
+import loginService from "../../login/services/LoginService";
 
 class AppNavigationBar extends PureComponent {
     render() {
@@ -23,13 +23,19 @@ class AppNavigationBar extends PureComponent {
                     />
                 }
                 rightButton={
-                    <Image
-                        source={require('./assets/AppNavigationBar-profile.png')}
-                        style={styles.navigationBarProfile}
-                    />
+                    <TouchableHighlight onPress={this.onProfileClick}>
+                        <Image
+                            source={{uri: loginService.currentUserInfo.picture.data.url}}
+                            style={styles.navigationBarProfile}
+                        />
+                    </TouchableHighlight>
                 }
             />
         )
+    }
+
+    async onProfileClick() {
+        await loginService.logoff();
     }
 }
 
@@ -56,11 +62,13 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     navigationBarProfile: {
-        width: 18,
+        width: 34,
         height: 34,
+        borderRadius: 50,
         marginTop: 5,
         marginRight: 8,
-        resizeMode: 'contain',
+        borderWidth: 1,
+        borderColor: "#ccc"
     }
 });
 
