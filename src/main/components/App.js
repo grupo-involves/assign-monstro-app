@@ -4,6 +4,7 @@ import autobind from 'class-autobind';
 
 import routerService from './../services/RouterService'
 
+import Gallery from "../../gallery/components/Gallery";
 import Home from "../../home/components/Home";
 import Login from './../../login/components/Login';
 import AppNavigationBar from "../../common/components/AppNavigationBar";
@@ -35,6 +36,7 @@ class App extends Component {
                     <View style={{flex: 1, paddingBottom: 66}}>
                         {
                             this.state.currentRoute === routerService.routes.home ? <Home/>
+                                : this.state.currentRoute === routerService.routes.gallery ? <Gallery/>
                                 : <Text style={{paddingTop: 50}}>No view defined</Text>
                         }
                     </View>
