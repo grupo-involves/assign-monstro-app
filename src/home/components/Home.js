@@ -3,9 +3,6 @@ import {Button, Image, Text, View} from 'react-native';
 import {ImagePicker, Permissions} from 'expo';
 import autobind from 'class-autobind';
 
-import AppNavigationBar from './../../common/components/AppNavigationBar';
-import AppBottomNavigationBar from "../../common/components/AppBottomNavigationBar";
-
 import loginService from '../../login/services/LoginService'
 
 class Home extends Component {

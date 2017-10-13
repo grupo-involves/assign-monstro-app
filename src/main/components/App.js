@@ -22,25 +22,25 @@ class App extends Component {
     }
 
     render() {
-        return (
+        return this.state.currentRoute === routerService.routes.login ? (
             <ScrollView contentContainerStyle={{flexGrow: 1}}>
                 <View style={{flex: 1}}>
-                    {
-                        this.state.currentRoute === routerService.routes.login
-                            ? (<Login/>)
-                            : (
-                                <View style={{flex: 1}}>
-                                    <AppNavigationBar/>
-                                    {
-                                        this.state.currentRoute === routerService.routes.home ? <Home/>
-                                            : <Text style={{paddingTop: 50}}>No view defined</Text>
-                                    }
-                                    <AppBottomNavigationBar/>
-                                </View>
-                            )
-                    }
+                    <Login/>
                 </View>
             </ScrollView>
+        ) : (
+            <View style={{flex: 1}}>
+                <AppNavigationBar/>
+                <ScrollView contentContainerStyle={{flexGrow: 1}}>
+                    <View style={{flex: 1, paddingBottom: 66}}>
+                        {
+                            this.state.currentRoute === routerService.routes.home ? <Home/>
+                                : <Text style={{paddingTop: 50}}>No view defined</Text>
+                        }
+                    </View>
+                </ScrollView>
+                <AppBottomNavigationBar/>
+            </View>
         );
     }
 
